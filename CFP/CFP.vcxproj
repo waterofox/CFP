@@ -128,6 +128,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="src\models\Member_Achievements_Model.cpp" />
+    <ClCompile Include="src\models\Member_Stats_Model.cpp" />
+    <ClCompile Include="src\models\Model.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="src\models\Member_Achievements_Model.h" />
+    <ClInclude Include="src\models\Member_Stats_Model.h" />
+    <ClInclude Include="src\models\Model.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tables\mems_achivments.xlsx" />
+    <None Include="tables\mems_stats.xlsx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
