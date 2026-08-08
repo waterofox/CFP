@@ -1,4 +1,5 @@
 #include "Member_Tasks_Model.h"
+#include "Member_Contest_Model.h"
 
 void Member_Tasks_Model::sync_table()
 {
@@ -35,6 +36,7 @@ void Member_Tasks_Model::complete_solution(unsigned short const& task, const std
 	members_data[members[member_name]].insert(task);
 
 }
+
 
 bool Member_Tasks_Model::is_task_exsits(const std::string& task_name)
 {
