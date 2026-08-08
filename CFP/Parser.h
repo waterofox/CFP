@@ -1,15 +1,18 @@
 #pragma once
-#include <unordered_map>
-#include <string>
 
-struct Member
-{
-
-};
+#include "src/models/db/Member_Achievements_Model.h"
+#include "src/models/Member_Stats_Model.h";
 
 class Parser
 {
-	std::unordered_map<unsigned short, std::string> ñontests_tbl;	
-	std::unordered_map<std::string, Member> members_tbl;
+	//MODELS
+	Member_Achievements_Model member_achivments;
+	Member_Stats_Model	      member_stats;
+
+public:
+	void start();
+
+	Parser() = default;
+	~Parser() = default;
 };
 

@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\models\Member_Achievements_Model.cpp">
-      <Filter>SRC</Filter>
-    </ClCompile>
     <ClCompile Include="Parser.cpp">
       <Filter>SRC</Filter>
     </ClCompile>
@@ -14,6 +11,12 @@
       <Filter>SRC</Filter>
     </ClCompile>
     <ClCompile Include="src\models\Member_Stats_Model.cpp">
+      <Filter>SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\db\Member_Achievements_Model.cpp">
+      <Filter>SRC</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\db\DB_Model.cpp">
       <Filter>SRC</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,17 +33,24 @@
     <Filter Include="TABLES">
       <UniqueIdentifier>{8a40ff6e-b0b5-446b-93ae-5169f2b66391}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MODELS\DB">
+      <UniqueIdentifier>{17c1ca5a-b44d-4e36-81c6-2edc6f4e6638}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="src\models\Member_Achievements_Model.h">
-      <Filter>MODELS</Filter>
-    </ClInclude>
     <ClInclude Include="src\models\Model.h">
       <Filter>MODELS</Filter>
     </ClInclude>
     <ClInclude Include="src\models\Member_Stats_Model.h">
       <Filter>MODELS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\db\Member_Achievements_Model.h">
+      <Filter>MODELS\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\models\db\DB_Model.h">
+      <Filter>MODELS\DB</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -50,5 +60,8 @@
     <None Include="tables\mems_stats.xlsx">
       <Filter>TABLES</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CFP.rc" />
   </ItemGroup>
 </Project>
