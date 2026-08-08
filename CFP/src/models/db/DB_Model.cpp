@@ -9,6 +9,18 @@ void DB_Model::sync_table()
 		if (wbs.cell(2, i).value().getString().length() == 0) { continue; }
 		members.insert({ wbs.cell(2,i).value().getString(),i });
 	}
+
+
+	for (int i = 3; i <= wbs.rowCount(); ++i)
+	{
+		for (int j = 2; j <= wbs.columnCount(); ++j)
+		{
+			if (wbs.cell(i, j).value() == 1)
+			{
+				members_data[j].insert(i);
+			}
+		}
+	}
 }
 
 bool DB_Model::add_member(const std::string& member_name)

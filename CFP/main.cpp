@@ -8,11 +8,6 @@ int main()
 	if (mod.start())
 	{
 		printf("started\n");
-		
-		mod.add_member("SnifflyFox");
-		printf("%d",mod.get_member("SnifflyFox"));
-		mod.add_member("Arter");
-		printf("%d", mod.get_member("Arter"));
 
 		mod.stop();
 	}

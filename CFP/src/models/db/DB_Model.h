@@ -2,12 +2,16 @@
 
 #include "../Model.h"
 
+#include <unordered_set>
+#include <unordered_map>
+
 using namespace OpenXLSX;
 
 class DB_Model : public Model
 {
 protected:
 	std::unordered_map<std::string, unsigned short> members;
+	std::unordered_map<unsigned short, std::unordered_set<unsigned short>> members_data;
 
 	virtual void sync_table() override;
 

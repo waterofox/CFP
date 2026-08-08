@@ -19,6 +19,9 @@
     <ClCompile Include="src\models\db\DB_Model.cpp">
       <Filter>SRC</Filter>
     </ClCompile>
+    <ClCompile Include="src\models\db\Member_Tasks_Model.cpp">
+      <Filter>SRC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SRC">
@@ -52,12 +55,21 @@
     <ClInclude Include="src\models\db\DB_Model.h">
       <Filter>MODELS\DB</Filter>
     </ClInclude>
+    <ClInclude Include="src\models\db\Member_Tasks_Model.h">
+      <Filter>MODELS\DB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tables\mems_achivments.xlsx">
       <Filter>TABLES</Filter>
     </None>
     <None Include="tables\mems_stats.xlsx">
+      <Filter>TABLES</Filter>
+    </None>
+    <None Include="tables\mems_contests.xlsx">
+      <Filter>TABLES</Filter>
+    </None>
+    <None Include="tables\mems_tasks.xlsx">
       <Filter>TABLES</Filter>
     </None>
   </ItemGroup>
