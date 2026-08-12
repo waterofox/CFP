@@ -9,17 +9,18 @@ using namespace OpenXLSX;
 
 class DB_Model : public Model
 {
+	void push_table() override;
+
 protected:
-	std::unordered_map<std::string, unsigned short> members;
-	std::unordered_map<unsigned short, std::unordered_set<unsigned short>> members_data;
-
+	std::unordered_map<std::string, unsigned int> data;
 	virtual void sync_table() override;
-
-public:
-	bool add_member(const std::string& member_name);
-	unsigned short get_member(const std::string& member_name);
 	
-	bool is_member_exits(const std::string& member_name);
+public:
+	
+	
+	unsigned int const& get_data_id(const std::string& data);
+	void add_data(const std::string& new_data);
+	bool is_data_exsits(const std::string& member_name);
 
 	DB_Model() = default;
 	~DB_Model() = default;

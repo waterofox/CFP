@@ -132,6 +132,7 @@
     <ClCompile Include="src\models\db\DB_Model.cpp" />
     <ClCompile Include="src\models\db\Member_Achievements_Model.cpp" />
     <ClCompile Include="src\models\db\Member_Contest_Model.cpp" />
+    <ClCompile Include="src\models\db\Member_Model.cpp" />
     <ClCompile Include="src\models\db\Member_Tasks_Model.cpp" />
     <ClCompile Include="src\models\Member_Stats_Model.cpp" />
     <ClCompile Include="src\models\Model.cpp" />
@@ -142,11 +143,13 @@
     <ClInclude Include="src\models\db\DB_Model.h" />
     <ClInclude Include="src\models\db\Member_Achievements_Model.h" />
     <ClInclude Include="src\models\db\Member_Contest_Model.h" />
+    <ClInclude Include="src\models\db\Member_Model.h" />
     <ClInclude Include="src\models\db\Member_Tasks_Model.h" />
     <ClInclude Include="src\models\Member_Stats_Model.h" />
     <ClInclude Include="src\models\Model.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="tables\mems.xlsx" />
     <None Include="tables\mems_achivments.xlsx" />
     <None Include="tables\mems_contests.xlsx" />
     <None Include="tables\mems_stats.xlsx" />

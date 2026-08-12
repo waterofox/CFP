@@ -11,6 +11,7 @@ protected:
 	XLDocument table;
 	std::string table_path;
 	virtual void sync_table() = 0;
+	virtual void push_table() = 0;
 
 private:
 	bool started = false;

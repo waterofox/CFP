@@ -29,6 +29,15 @@ void Parser::start()
 	{
 		printf("member tasks model started\n");
 	}
+
+	if (!member_db.start())
+	{
+		models_started_flag = false;
+	}
+	else
+	{
+		printf("member model started\n");
+	}
 	
 	if (!member_stats.start())
 	{
@@ -38,6 +47,8 @@ void Parser::start()
 	{
 		printf("member stats model started\n");
 	}
+
+
 
 	if (!models_started_flag) 
 	{
@@ -66,23 +77,29 @@ void Parser::start()
 		//---------------------------------------------------------------------------------------------------------------------------------------
 		//member parsing
 
-		if (!member_achivments_db.is_member_exits(member))
+		if (!member_db.is_data_exsits(member))
 		{
-			member_achivments_db.add_member(member);
-			member_contests_db.add_member(member);
-			member_tasks_db.add_member(member);
-
-			member_stats.add_member(member);
+			member_db.add_data(member);
+			//member_stats.add_member(member);
 		}
 
 		//---------------------------------------------------------------------------------------------------------------------------------------
 		//task parsing
 
-		if (!member_tasks_db.is_task_exsits(task))
+		if (!member_tasks_db.is_data_exsits(task))
 		{
-			member_tasks_db.add_new_task(task);
+			member_tasks_db.add_data(task);
 		}
 
+		//---------------------------------------------------------------------------------------------------------------------------------------
+		//contest parsing
+
+		if (!member_contests_db.is_data_exsits(contest))
+		{
+			member_contests_db.add_data(contest);
+		}
+
+		/*
 		std::string task_status = wbs.cell(i, 6).value().getString();
 
 		if (task_status == "OK") 
@@ -99,6 +116,7 @@ void Parser::start()
 				member_tasks_db.complete_solution(member_tasks_db.get_task(task), member);
 			}
 		}
+		*/
 	}
 
 
@@ -109,6 +127,7 @@ void Parser::start()
 	member_achivments_db.stop();
 	member_tasks_db.stop();
 	member_contests_db.stop();
+	member_db.stop();
 
 	member_stats.stop();
 

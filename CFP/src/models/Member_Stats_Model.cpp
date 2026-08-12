@@ -34,6 +34,11 @@ void Member_Stats_Model::sync_table()
 	
 }
 
+void Member_Stats_Model::push_table()
+{
+	//todo in dev
+}
+
 bool Member_Stats_Model::add_member(const std::string& member_name)
 {
 	if (is_member_exsits(member_name)) { return true; }

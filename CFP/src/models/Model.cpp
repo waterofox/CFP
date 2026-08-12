@@ -23,6 +23,7 @@ void Model::stop()
 {
 	if (started)
 	{
+		push_table();
 		table.save();
 		table.close();
 		started = false;

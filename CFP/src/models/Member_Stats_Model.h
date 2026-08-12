@@ -12,6 +12,7 @@ class Member_Stats_Model : public Model
 	std::unordered_map<unsigned short, std::unordered_map<unsigned short, unsigned int>> members_stats;
 
 	void sync_table() override;
+	void push_table() override;
 
 public:
 
