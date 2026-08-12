@@ -66,13 +66,24 @@ void Parser::start()
 
 	//============================================================================================================================================
 
+	printf("\nstart parsing sc_status.xlsx\n");
+	system("pause");
+	
 	auto wbs = cf_status.workbook().worksheet("Status");
+	int len = wbs.rowCount();
+	
+	float one_ps = float(len) / 100.f;
+	float tmp = 1.f / one_ps;
+	float pars_status_bar = 0;
 
-	for (int i = 1; i <= wbs.rowCount(); ++i)
+	for (int i = 2; i <= len; ++i)
 	{
+		//pars_status_bar += tmp;
+		//std::cout << pars_status_bar << "% - completed\n";
+
 		std::string member = wbs.cell(i, 3).value().getString();
 		std::string task = wbs.cell(i, 4).value().getString();
-		std::string contest = wbs.cell(i, 10).value().getString();
+		std::string contest = wbs.cell(i, 9).value().getString();
 
 		//---------------------------------------------------------------------------------------------------------------------------------------
 		//member parsing
@@ -80,8 +91,9 @@ void Parser::start()
 		if (!member_db.is_data_exsits(member))
 		{
 			member_db.add_data(member);
-			//member_stats.add_member(member);
+			member_stats.add_member(member_db.get_data_id(member));
 		}
+		
 
 		//---------------------------------------------------------------------------------------------------------------------------------------
 		//task parsing
@@ -89,6 +101,29 @@ void Parser::start()
 		if (!member_tasks_db.is_data_exsits(task))
 		{
 			member_tasks_db.add_data(task);
+		}
+
+		std::string task_status = wbs.cell(i, 6).value().getString();
+
+		if (task_status == "WRONG_ANSWER")
+		{
+			int current_wa_by_wa = member_stats.get_value(member_db.get_data_id(member), "war_by_war");
+			if (current_wa_by_wa != 5) 
+			{
+				member_stats.set_value(member_db.get_data_id(member), "war_by_war", current_wa_by_wa + 1);
+				if (current_wa_by_wa + 1 == 5)
+				{
+					std::cout << member << " GOT AN ACHIVMENT!\n";
+				}
+			}
+		}
+		else
+		{
+			int current_wa_by_wa = member_stats.get_value(member_db.get_data_id(member), "war_by_war");
+			if (current_wa_by_wa != 5)
+			{
+				member_stats.set_value(member_db.get_data_id(member), "war_by_war", 0);
+			}
 		}
 
 		//---------------------------------------------------------------------------------------------------------------------------------------

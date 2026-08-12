@@ -5,7 +5,7 @@ void Member_Stats_Model::sync_table()
 	auto wbs = table.workbook().worksheet("sta");
 	std::unordered_map<unsigned short, unsigned int> meta_row;
 
-	for (int i = 2; i <= wbs.columnCount(); ++i)
+	for (int i = 1; i <= wbs.columnCount(); ++i)
 	{
 		stats.insert({wbs.cell(1,i).value().getString(),i});
 		meta_row[i] = 0;
@@ -13,74 +13,55 @@ void Member_Stats_Model::sync_table()
 
 	for (int i = 2; i <= wbs.rowCount(); ++i)
 	{
-		members.insert({wbs.cell(i,1).value().getString(),i});
 		members_stats.insert({i,meta_row});
 	}
-	
-	for (auto& member : members)
-	{
-		unsigned short const& id = member.second;
-		
-		auto& row = members_stats[id];
 
+	for (auto& row : members_stats)
+	{
 		for (auto& stat : stats)
 		{
-			unsigned short const& id_st = stat.second;
-
-			row[id_st] = wbs.cell(id, id_st).value().get<unsigned int>();
+			(row.second)[stat.second] = wbs.cell(row.first, stat.second).value();
 		}
 	}
-
 	
 }
 
 void Member_Stats_Model::push_table()
 {
-	//todo in dev
-}
-
-bool Member_Stats_Model::add_member(const std::string& member_name)
-{
-	if (is_member_exsits(member_name)) { return true; }
-
 	auto wbs = table.workbook().worksheet("sta");
 
-	wbs.cell(wbs.rowCount() + 1, 1).value() = member_name;
-
-	std::unordered_map<unsigned short, unsigned int> meta_row;
-
-	for (int i = 2; i <= wbs.columnCount(); ++i)
+	for (auto& row : members_stats)
 	{
-		stats.insert({ wbs.cell(1,i).value().getString(),i });
-		meta_row[i] = 0;
-		wbs.cell(wbs.rowCount(), i).value() = 0;
+		for (auto& stat : stats)
+		{
+			wbs.cell(row.first, stat.second).value() = (row.second)[stat.second];
+		}
 	}
-
-	//auto new_row = wbs.row(wbs.rowCount() + 1);
-	//(*new_row.cells().begin()).value() = member_name;
-
-	members.insert({member_name,wbs.rowCount()});
-	members_stats.insert({ wbs.rowCount(),meta_row });
 }
 
-bool Member_Stats_Model::is_member_exsits(const std::string& member_name)
+void Member_Stats_Model::add_member(unsigned int const& member_id)
 {
-	auto pot_member = members.find(member_name);
-	if (pot_member != members.end()) { return true; }
+	if (is_member_exsits(member_id)) { return; }
+	std::unordered_map<unsigned short, unsigned int> meta_row;
+	
+	members_stats.insert({ members_stats.size()+2,meta_row});
+	
+}
+
+bool Member_Stats_Model::is_member_exsits(unsigned int const& member_id)
+{;
+	if (members_stats.find(member_id) != members_stats.end()) { return true; }
 	return false;
 }
 
-int unsigned& Member_Stats_Model::get_value(const std::string& member_name, const std::string stat_name)
+int unsigned& Member_Stats_Model::get_value(unsigned int const& member_id, const std::string& stat_name)
 {
-	return members_stats[members[member_name]][stats[stat_name]];
+	return members_stats[member_id][stats[stat_name]];
 }
 
-void Member_Stats_Model::set_value(const std::string& member_name, const std::string stat_name, int unsigned const& value)
+void Member_Stats_Model::set_value(unsigned int const& member_id, const std::string& stat_name, unsigned int const& value)
 {
-	auto wbs = table.workbook().worksheet("sta");
-
-	wbs.cell(members[member_name], stats[stat_name]).value() = value;
-	members_stats[members[member_name]][stats[stat_name]] = value;
+	members_stats[member_id][stats[stat_name]] = value;
 }
 
 Member_Stats_Model::Member_Stats_Model()
