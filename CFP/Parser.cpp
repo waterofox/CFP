@@ -111,10 +111,6 @@ void Parser::start()
 			if (current_wa_by_wa != 5) 
 			{
 				member_stats.set_value(member_db.get_data_id(member), "war_by_war", current_wa_by_wa + 1);
-				if (current_wa_by_wa + 1 == 5)
-				{
-					std::cout << member << " GOT AN ACHIVMENT!\n";
-				}
 			}
 		}
 		else

@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="src\models\db\DB_Model.h" />
     <ClInclude Include="src\models\db\Member_Achievements_Model.h" />
     <ClInclude Include="src\models\db\Member_Contest_Model.h" />
