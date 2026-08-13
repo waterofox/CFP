@@ -12,6 +12,8 @@ void Member_Model::load_members_info()
 
 	int tmp;
 
+	printf("loading members data...\n");
+
 	for (auto& mem : data)
 	{
 		file.open("data\\" + mem.first + ".txt");
@@ -44,6 +46,63 @@ void Member_Model::load_members_info()
 
 		file.close();
 	}
+}
+
+void Member_Model::push_members_info()
+{
+	std::ofstream file;
+
+	printf("saving members data...\n");
+
+	for (auto& mem : data)
+	{
+		auto& member = members[mem.second];
+
+		file.open("data\\" + mem.first + ".txt",std::ios_base::out);
+
+		file << member.tasks.size() << ' ';
+		for (auto& el : member.tasks)
+		{
+			file << el << ' ';
+		}
+		file << '\n';
+
+		file << member.contests.size() << ' ';
+		for (auto& el : member.contests)
+		{
+			file << el << ' ';
+		}
+		file << '\n';
+
+		file << member.achivments.size() << ' ';
+		for (auto& el : member.achivments)
+		{
+			file << el << ' ';
+		}
+		file << '\n';
+
+
+		file.close();
+	}
+}
+
+void Member_Model::push_table()
+{
+	DB_Model::push_table();
+	push_members_info();
+
+}
+
+void Member_Model::sync_table()
+{
+	DB_Model::sync_table();
+	load_members_info();
+}
+
+void Member_Model::add_member(const std::string& member)
+{
+	this->add_data(member);
+	std::ofstream("data\\" + member + ".txt") << "0\n0\n0";
 }
 
 Member_Model::Member_Model()

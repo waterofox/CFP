@@ -10,11 +10,15 @@ class Member_Model : public DB_Model
 		std::unordered_set<unsigned int> contests;
 		std::unordered_set<unsigned int> achivments;
 	};
-
-	std::unordered_map<unsigned int, member_info> members;
 	void load_members_info();
+	void push_members_info();
 
+	void push_table() override;
+	void sync_table() override;
 public:
+	std::unordered_map<unsigned int, member_info> members;
+	void add_member(const std::string& member);
+
 	Member_Model();
 	~Member_Model() = default;
 };

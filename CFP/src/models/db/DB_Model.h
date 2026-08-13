@@ -9,10 +9,9 @@ using namespace OpenXLSX;
 
 class DB_Model : public Model
 {
-	void push_table() override;
-
 protected:
 	std::unordered_map<std::string, unsigned int> data;
+	virtual void push_table() override;
 	virtual void sync_table() override;
 	
 public:
