@@ -121,6 +121,8 @@ void Parser::start()
 		{
 			int current_wa_by_wa = member_stats.get_value(member_id, "war_by_war");
 			member_stats.set_value(member_id, "war_by_war", current_wa_by_wa + 1);
+			
+			member_stats.set_value(member_id, "wa", 1);
 		}
 		else
 		{
@@ -156,6 +158,20 @@ void Parser::start()
 			member_stats.set_value(member_id, "correct_by_correct", 0);
 		}
 
+		if (task_status == "COMPILATION_ERROR")
+		{
+			member_stats.set_value(member_id, "ce", 1);
+		}
+		
+		if (task_status == "TIME_LIMIT_EXCEEDED")
+		{
+			member_stats.set_value(member_id, "tl", 1);
+		}
+
+		if (task_status == "MEMORY_LIMIT_EXCEEDED")
+		{
+			member_stats.set_value(member_id, "ml", 1);
+		}
 
 		//============================================================================================================================================
 	}
