@@ -76,6 +76,14 @@ void Parser::start()
 	float tmp = 1.f / one_ps;
 	float pars_status_bar = 0;
 
+	std::unordered_set<std::string> structs_contests   = {"570478","573635","604876" };
+	std::unordered_set<std::string> math_contests      = {"568747","592220","596277","603194"};
+	std::unordered_set<std::string> dp_contests        = {"580161","582016","598187","599925"};
+	std::unordered_set<std::string> base_cpp_contests  = {"550879","552380","555156","557609","559129","561317"};
+	std::unordered_set<std::string> graphs_contests    = {"585202","586871","588471","590577","601495","606492" };
+	std::unordered_set<std::string> base_algo_contests = {"563482","565018","567104","572133","574668","583445","607871"};
+
+
 	for (int i = 2; i <= len; ++i)
 	{
 		//pars_status_bar += tmp;
@@ -143,11 +151,54 @@ void Parser::start()
 
 				member_info.tasks.insert(task_id);
 
+				//base C++ check
+
+				if (base_cpp_contests.find(contest) != base_cpp_contests.end())
+				{
+					member_stats.set_value(member_id, "total_base++", member_stats.get_value(member_id,"total_base++")+1);
+				}
+
+				//base algo check
+
+				if (base_algo_contests.find(contest) != base_algo_contests.end())
+				{
+					member_stats.set_value(member_id, "total_base_algo", member_stats.get_value(member_id, "total_base_algo") + 1);
+				}
+
+				//structs check
+
+				if (structs_contests.find(contest) != structs_contests.end())
+				{
+					member_stats.set_value(member_id, "total_struct", member_stats.get_value(member_id, "total_struct") + 1);
+				}
+
+				//math check
+
+				if (math_contests.find(contest) != math_contests.end())
+				{
+					member_stats.set_value(member_id, "total_math", member_stats.get_value(member_id, "total_math") + 1);
+				}
+
+				//dp check
+
+				if (dp_contests.find(contest) != dp_contests.end())
+				{
+					member_stats.set_value(member_id, "total_dp", member_stats.get_value(member_id, "total_dp") + 1);
+				}
+
+				//graphs check
+
+				if (graphs_contests.find(contest) != graphs_contests.end())
+				{
+					member_stats.set_value(member_id, "total_dp", member_stats.get_value(member_id, "total_dp") + 1);
+				}
+
+
 				//new contest check
 
 				if (member_info.contests.find(contest_id) == member_info.contests.end())
 				{
-					member_stats.set_value(member_id, "total_contest", member_stats.get_value(member_id, "total_contest") + 1);
+					member_stats.set_value(member_id, "total_graphs", member_stats.get_value(member_id, "total_graphs") + 1);
 
 					member_info.contests.insert(contest_id);
 				}

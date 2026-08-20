@@ -136,6 +136,7 @@
     <ClCompile Include="src\models\db\Member_Tasks_Model.cpp" />
     <ClCompile Include="src\models\Member_Stats_Model.cpp" />
     <ClCompile Include="src\models\Model.cpp" />
+    <ClCompile Include="src\system\Date.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="src\models\db\Member_Tasks_Model.h" />
     <ClInclude Include="src\models\Member_Stats_Model.h" />
     <ClInclude Include="src\models\Model.h" />
+    <ClInclude Include="src\system\Date.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tables\mems.xlsx" />

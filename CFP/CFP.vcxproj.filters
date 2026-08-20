@@ -28,6 +28,9 @@
     <ClCompile Include="src\models\db\Member_Model.cpp">
       <Filter>SRC</Filter>
     </ClCompile>
+    <ClCompile Include="src\system\Date.cpp">
+      <Filter>SRC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SRC">
@@ -68,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="src\models\db\Member_Model.h">
       <Filter>MODELS\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\Date.h">
+      <Filter>SYSTEM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
