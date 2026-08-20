@@ -10,6 +10,8 @@ public:
 	short month = 1;
 	short year = 0;
 
+	static int days(const Date&, const Date&);
+
 	Date()  = default;
 	~Date() = default;
 

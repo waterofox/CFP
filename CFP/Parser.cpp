@@ -1,5 +1,7 @@
 #include "Parser.h"
 
+#include "src/system/Date.h"
+
 void Parser::start()
 {
 	bool models_started_flag = true;
@@ -83,15 +85,28 @@ void Parser::start()
 	std::unordered_set<std::string> graphs_contests    = {"585202","586871","588471","590577","601495","606492" };
 	std::unordered_set<std::string> base_algo_contests = {"563482","565018","567104","572133","574668","583445","607871"};
 
+	std::string member;
+	std::string task;
+	std::string contest;
+	
+	long long date_unix;
+	Date date;
+	Date last_date_task;
+
+	int member_id;
+	int task_id;
+	int contest_id;
+
+	std::string task_status;
 
 	for (int i = 2; i <= len; ++i)
 	{
 		//pars_status_bar += tmp;
 		//std::cout << pars_status_bar << "% - completed\n";
 
-		std::string member = wbs.cell(i, 3).value().getString();
-		std::string task = wbs.cell(i, 4).value().getString();
-		std::string contest = wbs.cell(i, 9).value().getString();
+		member = wbs.cell(i, 3).value().getString();
+		task = wbs.cell(i, 4).value().getString();
+		contest = wbs.cell(i, 9).value().getString();
 
 		//---------------------------------------------------------------------------------------------------------------------------------------
 		//member parsing
@@ -119,11 +134,11 @@ void Parser::start()
 			member_contests_db.add_data(contest);
 		}
 
-		int member_id = member_db.get_data_id(member);
-		int task_id = member_tasks_db.get_data_id(task);
-		int contest_id = member_contests_db.get_data_id(contest);
+		member_id = member_db.get_data_id(member);
+		task_id = member_tasks_db.get_data_id(task);
+		contest_id = member_contests_db.get_data_id(contest);
 
-		std::string task_status = wbs.cell(i, 6).value().getString();
+		task_status = wbs.cell(i, 6).value().getString();
 
 		if (task_status == "WRONG_ANSWER")
 		{
@@ -224,6 +239,47 @@ void Parser::start()
 			member_stats.set_value(member_id, "ml", 1);
 		}
 
+
+		//dateing
+		//-------------------------------------------------------------------------------------------------------------------------------------------
+		
+		date_unix = wbs.cell(i, 2).value().get<long long>();
+		date = Date(date_unix);
+		last_date_task = Date(member_stats.get_value(member_id, "last_task_date"));
+		
+		int day_diff = Date::days(date, last_date_task);
+
+		if (day_diff >= 1)
+		{
+			//new day
+
+			if (day_diff == 1)
+			{
+				member_stats.set_value(member_id, "day_by_day", member_stats.get_value(member_id, "day_by_day") + 1);	
+			}
+			else
+			{
+				member_stats.set_value(member_id, "day_by_day", 1);
+			}
+
+			if (task_status == "OK")
+			{
+				member_stats.set_value(member_id, "day_tasks", 1);
+			}
+			else
+			{
+				member_stats.set_value(member_id, "day_tasks", 0);
+			}
+
+		}
+		else
+		{
+			//this day
+			if (task_status == "OK")
+			{
+				member_stats.set_value(member_id, "day_tasks", member_stats.get_value(member_id, "day_tasks") + 1);
+			}
+		}
 		//============================================================================================================================================
 	}
 
