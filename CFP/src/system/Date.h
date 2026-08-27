@@ -10,6 +10,10 @@ public:
 	short month = 1;
 	short year = 0;
 
+	short h;
+	short m;
+	short s;
+
 	static int days(const Date&, const Date&);
 
 	Date()  = default;

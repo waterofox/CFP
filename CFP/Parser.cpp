@@ -97,12 +97,16 @@ void Parser::start()
 	int task_id;
 	int contest_id;
 
+	bool is_new_task = false;
+
 	std::string task_status;
 
 	for (int i = 2; i <= len; ++i)
 	{
 		//pars_status_bar += tmp;
 		//std::cout << pars_status_bar << "% - completed\n";
+
+		is_new_task = false;
 
 		member = wbs.cell(i, 3).value().getString();
 		task = wbs.cell(i, 4).value().getString();
@@ -161,6 +165,8 @@ void Parser::start()
 			{
 				//first correcet solution of task
 
+				is_new_task = true;
+
 				member_stats.set_value(member_id, "correct_by_correct", member_stats.get_value(member_id, "correct_by_correct") + 1);
 				member_stats.set_value(member_id, "total_tasks", member_stats.get_value(member_id, "total_tasks") + 1);
 
@@ -205,7 +211,7 @@ void Parser::start()
 
 				if (graphs_contests.find(contest) != graphs_contests.end())
 				{
-					member_stats.set_value(member_id, "total_dp", member_stats.get_value(member_id, "total_dp") + 1);
+					member_stats.set_value(member_id, "total_graphs", member_stats.get_value(member_id, "total_graphs") + 1);
 				}
 
 
@@ -213,7 +219,7 @@ void Parser::start()
 
 				if (member_info.contests.find(contest_id) == member_info.contests.end())
 				{
-					member_stats.set_value(member_id, "total_graphs", member_stats.get_value(member_id, "total_graphs") + 1);
+					member_stats.set_value(member_id, "total_contest", member_stats.get_value(member_id, "total_contest") + 1);
 
 					member_info.contests.insert(contest_id);
 				}
@@ -253,6 +259,8 @@ void Parser::start()
 		{
 			//new day
 
+			member_stats.set_value(member_id, "total_days", member_stats.get_value(member_id, "total_days") + 1);
+
 			if (day_diff == 1)
 			{
 				member_stats.set_value(member_id, "day_by_day", member_stats.get_value(member_id, "day_by_day") + 1);	
@@ -264,7 +272,11 @@ void Parser::start()
 
 			if (task_status == "OK")
 			{
-				member_stats.set_value(member_id, "day_tasks", 1);
+				if (is_new_task)
+				{
+					member_stats.set_value(member_id, "day_tasks", 1);
+					is_new_task = false;
+				}
 			}
 			else
 			{
@@ -275,11 +287,15 @@ void Parser::start()
 		else
 		{
 			//this day
-			if (task_status == "OK")
+			if (task_status == "OK" and is_new_task)
 			{
+				is_new_task = false;
 				member_stats.set_value(member_id, "day_tasks", member_stats.get_value(member_id, "day_tasks") + 1);
 			}
 		}
+
+		member_stats.set_value(member_id, "last_task_date", date_unix);
+
 		//============================================================================================================================================
 	}
 

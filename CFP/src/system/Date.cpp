@@ -2,11 +2,16 @@
 
 Date::Date(long long const& unix_time)
 {
-    auto timeinfo = gmtime(&unix_time);
+    tm timeinfo;
+    gmtime_s(&timeinfo ,&unix_time);
 
-    day = timeinfo->tm_mday;
-    month = timeinfo->tm_mon + 1;
-    year = timeinfo->tm_year + 1900;
+    day = timeinfo.tm_mday;
+    month = timeinfo.tm_mon + 1;
+    year = timeinfo.tm_year + 1900;
+
+    h = timeinfo.tm_hour;
+    m = timeinfo.tm_min;
+    s = timeinfo.tm_sec;
 }
 
 int Date::days(const Date& date1, const Date& date2) {
