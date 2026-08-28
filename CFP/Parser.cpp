@@ -126,6 +126,8 @@ void Parser::start()
 	}
 	//============================================================================================================================================
 
+	std::unordered_set<int> members_on_stream;
+
 	printf("Now parsing table...\n");
 
 	//base package info
@@ -144,11 +146,19 @@ void Parser::start()
 	Date date;
 	Date last_date_task;
 
+	//stream info
+	bool is_stream = false;
+	long long stream_start_time_unix;
+	int stream_task_id;
+
 	OpenXLSX::XLWorksheet wbs = cf_status.workbook().worksheet("Status");
 	int len = wbs.rowCount();
 
 	for (int i = 2; i <= len; ++i)
 	{
+		float inf = float(i) / float(len);
+		printf("%f of 1\n", inf);
+
 		is_new_task = false; 
 
 		member      = wbs.cell(i, 3).value().getString();
@@ -161,6 +171,51 @@ void Parser::start()
 		member_id = member_db.get_data_id(member);
 		task_id = member_tasks_db.get_data_id(task);
 		contest_id = member_contests_db.get_data_id(contest);
+
+		date_unix = wbs.cell(i, 2).value().get<long long>();
+		date = Date(date_unix);
+		last_date_task = Date(member_stats.get_value(member_id, "last_task_date"));
+		
+		//HANDLE STREAMER
+
+		if (member == "whitesun")
+		{
+			//streamer
+			if (!is_stream)
+			{
+				stream_start_time_unix = date_unix;
+				is_stream = true;
+			}
+
+			stream_task_id = task_id;
+		}
+
+		//HANDLE STREAM END
+		
+		if (is_stream)
+		{
+			if (date_unix - stream_start_time_unix > 10800 or i == len) //3h or last package in cf_status
+			{
+				is_stream = false;
+			}
+			else
+			{
+				if (stream_task_id == task_id)
+				{
+					//member on stream
+					if (members_on_stream.find(member_id) == members_on_stream.end())
+					{
+						members_on_stream.insert(member_id);
+						member_stats.set_value(member_id, "total_stream", member_stats.get_value(member_id, "total_stream") + 1);
+					}
+				}
+			}
+		}
+
+		if (!is_stream)
+		{
+			members_on_stream.clear();
+		}
 
 		//HANDLE STATUSES OF TASKS
 
@@ -222,10 +277,6 @@ void Parser::start()
 
 		//HANDLE DATE N TIME OF PACKAGES
 		//-------------------------------------------------------------------------------------------------------------------------------------------
-		
-		date_unix = wbs.cell(i, 2).value().get<long long>();
-		date = Date(date_unix);
-		last_date_task = Date(member_stats.get_value(member_id, "last_task_date"));
 		
 		int day_diff = Date::days(date, last_date_task);
 
