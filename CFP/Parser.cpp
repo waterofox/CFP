@@ -2,154 +2,171 @@
 
 #include "src/system/Date.h"
 
+bool Parser::start_models()
+{
+
+	printf("Now starting models...\n");
+
+	if (!member_achivments_db.start()) return false;
+	if (!member_contests_db.start()) return false;
+	if (!member_tasks_db.start()) return false;
+	if (!member_db.start()) return false;
+	
+	if (!member_stats.start()) return false;
+
+	return true;
+}
+
+void Parser::stop_models()
+{
+	member_achivments_db.stop();
+	member_contests_db.stop();
+	member_tasks_db.stop();
+	member_db.stop();
+
+	member_stats.stop();
+}
+
+void Parser::update_db_models(const std::string& member, const std::string& contest, const std::string& task)
+{
+	if (!member_db.is_data_exsits(member))
+	{
+		member_db.add_member(member);
+		member_stats.add_member(member_db.get_data_id(member));
+	}
+	if (!member_tasks_db.is_data_exsits(task))
+	{
+		member_tasks_db.add_data(task);
+	}
+	if (!member_contests_db.is_data_exsits(contest))
+	{
+		member_contests_db.add_data(contest);
+	}
+}
+
+void Parser::handle_wa_status(const int& member_id)
+{
+	member_stats.set_value(member_id, "war_by_war", member_stats.get_value(member_id, "war_by_war") + 1);
+	member_stats.set_value(member_id, "wa", 1);
+}
+
+void Parser::handle_ok_status(const int& member_id, const int& constest_id, const int& task_id)
+{
+
+}
+
+
+void Parser::handle_contests_stats(const int& member_id, const std::string& contest)
+{
+	if (base_cpp_contests.find(contest) != base_cpp_contests.end())
+	{
+		member_stats.set_value(member_id, "total_base++", member_stats.get_value(member_id, "total_base++") + 1);
+	}
+	else if (base_algo_contests.find(contest) != base_algo_contests.end())
+	{
+		member_stats.set_value(member_id, "total_base_algo", member_stats.get_value(member_id, "total_base_algo") + 1);
+	}
+    else if (structs_contests.find(contest) != structs_contests.end())
+	{
+		member_stats.set_value(member_id, "total_struct", member_stats.get_value(member_id, "total_struct") + 1);
+	}
+	else if (math_contests.find(contest) != math_contests.end())
+	{
+		member_stats.set_value(member_id, "total_math", member_stats.get_value(member_id, "total_math") + 1);
+	}
+	else if (dp_contests.find(contest) != dp_contests.end())
+	{
+		member_stats.set_value(member_id, "total_dp", member_stats.get_value(member_id, "total_dp") + 1);
+	}
+	else if (graphs_contests.find(contest) != graphs_contests.end())
+	{
+		member_stats.set_value(member_id, "total_graphs", member_stats.get_value(member_id, "total_graphs") + 1);
+	}
+
+}
+
+void Parser::handle_new_day(const int& member_id,const int& day_diff)
+{
+
+	member_stats.set_value(member_id, "day_wa", 0);
+
+	member_stats.set_value(member_id, "total_days", member_stats.get_value(member_id, "total_days") + 1);
+
+	if (day_diff == 1)
+	{
+		member_stats.set_value(member_id, "day_by_day", member_stats.get_value(member_id, "day_by_day") + 1);
+	}
+	else
+	{
+		member_stats.set_value(member_id, "day_by_day", 1);
+	}
+}
+
 void Parser::start()
 {
-	bool models_started_flag = true;
-	if (!member_achivments_db.start())
-	{
-		models_started_flag = false;
-	}
-	else
-	{
-		printf("member achivments model started\n");
-	}
 
-	if (!member_contests_db.start())
+	if (!start_models())
 	{
-		models_started_flag = false;
-	}
-	else
-	{
-		printf("member contests model started\n");
-	}
-
-	if (!member_tasks_db.start())
-	{
-		models_started_flag = false;
-	}
-	else
-	{
-		printf("member tasks model started\n");
-	}
-
-	if (!member_db.start())
-	{
-		models_started_flag = false;
-	}
-	else
-	{
-		printf("member model started\n");
-	}
-
-	if (!member_stats.start())
-	{
-		models_started_flag = false;
-	}
-	else
-	{
-		printf("member stats model started\n");
-	}
-
-
-
-	if (!models_started_flag)
-	{
-		printf("PARSER ERROR: failed to start models\n");
+		printf("PARSER ERRROR: failed to start models\n");
+		stop_models();
 		return;
 	}
+
+	printf("All models started!\n");
+
+	printf("\nStart parsing sc_status.xlsx\n");
 
 	XLDocument cf_status;
 	cf_status.open("cf_status.xlsx");
 	if (!cf_status.isOpen())
 	{
 		printf("PARSER ERROR: falied to open cf table\n");
+		stop_models();
 		return;
 	}
-
 	//============================================================================================================================================
 
-	printf("\nstart parsing sc_status.xlsx\n");
-	system("pause");
+	printf("Now parsing table...\n");
 
-	auto wbs = cf_status.workbook().worksheet("Status");
-	int len = wbs.rowCount();
-
-	float one_ps = float(len) / 100.f;
-	float tmp = 1.f / one_ps;
-	float pars_status_bar = 0;
-
-	std::unordered_set<std::string> structs_contests   = {"570478","573635","604876" };
-	std::unordered_set<std::string> math_contests      = {"568747","592220","596277","603194"};
-	std::unordered_set<std::string> dp_contests        = {"580161","582016","598187","599925"};
-	std::unordered_set<std::string> base_cpp_contests  = {"550879","552380","555156","557609","559129","561317"};
-	std::unordered_set<std::string> graphs_contests    = {"585202","586871","588471","590577","601495","606492" };
-	std::unordered_set<std::string> base_algo_contests = {"563482","565018","567104","572133","574668","583445","607871"};
-
+	//base package info
 	std::string member;
 	std::string task;
 	std::string contest;
-	
-	long long date_unix;
-	Date date;
-	Date last_date_task;
+	std::string task_status;
 
 	int member_id;
 	int task_id;
 	int contest_id;
+	bool is_new_task = false; //true when package contains correct solution of unique task
 
-	bool is_new_task = false;
+	//date package info
+	long long date_unix;
+	Date date;
+	Date last_date_task;
 
-	std::string task_status;
+	OpenXLSX::XLWorksheet wbs = cf_status.workbook().worksheet("Status");
+	int len = wbs.rowCount();
 
 	for (int i = 2; i <= len; ++i)
 	{
-		//pars_status_bar += tmp;
-		//std::cout << pars_status_bar << "% - completed\n";
+		is_new_task = false; 
 
-		is_new_task = false;
-
-		member = wbs.cell(i, 3).value().getString();
-		task = wbs.cell(i, 4).value().getString();
-		contest = wbs.cell(i, 9).value().getString();
-
-		//---------------------------------------------------------------------------------------------------------------------------------------
-		//member parsing
-
-		if (!member_db.is_data_exsits(member))
-		{
-			member_db.add_member(member);
-			member_stats.add_member(member_db.get_data_id(member));
-		}
-
-
-		//---------------------------------------------------------------------------------------------------------------------------------------
-		//task parsings
-
-		if (!member_tasks_db.is_data_exsits(task))
-		{
-			member_tasks_db.add_data(task);
-		}
-
-		//---------------------------------------------------------------------------------------------------------------------------------------
-		//contest parsing
-
-		if (!member_contests_db.is_data_exsits(contest))
-		{
-			member_contests_db.add_data(contest);
-		}
+		member      = wbs.cell(i, 3).value().getString();
+		contest     = wbs.cell(i, 9).value().getString();
+		task        = wbs.cell(i, 4).value().getString();
+		task_status = wbs.cell(i, 6).value().getString();
+		
+		update_db_models(member, contest, task);
 
 		member_id = member_db.get_data_id(member);
 		task_id = member_tasks_db.get_data_id(task);
 		contest_id = member_contests_db.get_data_id(contest);
 
-		task_status = wbs.cell(i, 6).value().getString();
+		//HANDLE STATUSES OF TASKS
 
 		if (task_status == "WRONG_ANSWER")
 		{
-			int current_wa_by_wa = member_stats.get_value(member_id, "war_by_war");
-			member_stats.set_value(member_id, "war_by_war", current_wa_by_wa + 1);
-			
-			member_stats.set_value(member_id, "wa", 1);
+			handle_wa_status(member_id);
 		}
 		else
 		{
@@ -172,55 +189,12 @@ void Parser::start()
 
 				member_info.tasks.insert(task_id);
 
-				//base C++ check
-
-				if (base_cpp_contests.find(contest) != base_cpp_contests.end())
-				{
-					member_stats.set_value(member_id, "total_base++", member_stats.get_value(member_id,"total_base++")+1);
-				}
-
-				//base algo check
-
-				if (base_algo_contests.find(contest) != base_algo_contests.end())
-				{
-					member_stats.set_value(member_id, "total_base_algo", member_stats.get_value(member_id, "total_base_algo") + 1);
-				}
-
-				//structs check
-
-				if (structs_contests.find(contest) != structs_contests.end())
-				{
-					member_stats.set_value(member_id, "total_struct", member_stats.get_value(member_id, "total_struct") + 1);
-				}
-
-				//math check
-
-				if (math_contests.find(contest) != math_contests.end())
-				{
-					member_stats.set_value(member_id, "total_math", member_stats.get_value(member_id, "total_math") + 1);
-				}
-
-				//dp check
-
-				if (dp_contests.find(contest) != dp_contests.end())
-				{
-					member_stats.set_value(member_id, "total_dp", member_stats.get_value(member_id, "total_dp") + 1);
-				}
-
-				//graphs check
-
-				if (graphs_contests.find(contest) != graphs_contests.end())
-				{
-					member_stats.set_value(member_id, "total_graphs", member_stats.get_value(member_id, "total_graphs") + 1);
-				}
-
+				handle_contests_stats(member_id, contest);
 
 				//new contest check
-
 				if (member_info.contests.find(contest_id) == member_info.contests.end())
 				{
 					member_stats.set_value(member_id, "total_contest", member_stats.get_value(member_id, "total_contest") + 1);
-
 					member_info.contests.insert(contest_id);
 				}
 			}
@@ -246,7 +220,7 @@ void Parser::start()
 		}
 
 
-		//dateing
+		//HANDLE DATE N TIME OF PACKAGES
 		//-------------------------------------------------------------------------------------------------------------------------------------------
 		
 		date_unix = wbs.cell(i, 2).value().get<long long>();
@@ -259,16 +233,7 @@ void Parser::start()
 		{
 			//new day
 
-			member_stats.set_value(member_id, "total_days", member_stats.get_value(member_id, "total_days") + 1);
-
-			if (day_diff == 1)
-			{
-				member_stats.set_value(member_id, "day_by_day", member_stats.get_value(member_id, "day_by_day") + 1);	
-			}
-			else
-			{
-				member_stats.set_value(member_id, "day_by_day", 1);
-			}
+			handle_new_day(member_id,day_diff);
 
 			if (task_status == "OK")
 			{
@@ -292,6 +257,11 @@ void Parser::start()
 				is_new_task = false;
 				member_stats.set_value(member_id, "day_tasks", member_stats.get_value(member_id, "day_tasks") + 1);
 			}
+
+			if (task_status == "WRONG_ANSWER")
+			{
+				member_stats.set_value(member_id, "day_wa",1);
+			}
 		}
 
 		member_stats.set_value(member_id, "last_task_date", date_unix);
@@ -301,10 +271,5 @@ void Parser::start()
 
 	cf_status.close();
 
-	member_achivments_db.stop();
-	member_tasks_db.stop();
-	member_contests_db.stop();
-	member_db.stop();
-
-	member_stats.stop();
+	stop_models();
 }
