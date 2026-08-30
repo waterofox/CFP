@@ -164,6 +164,9 @@ void Parser::start()
 		member      = wbs.cell(i, 3).value().getString();
 		contest     = wbs.cell(i, 9).value().getString();
 		task        = wbs.cell(i, 4).value().getString();
+
+		task = (contest + " " + task); //contest num _ task
+
 		task_status = wbs.cell(i, 6).value().getString();
 		
 		update_db_models(member, contest, task);
@@ -178,7 +181,7 @@ void Parser::start()
 		
 		//HANDLE STREAMER
 
-		if (member == "whitesun")
+		if (member == "WhiteSun97")
 		{
 			//streamer
 			if (!is_stream)
