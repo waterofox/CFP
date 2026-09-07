@@ -42,6 +42,27 @@ class Parser
 	//STATS
 	void handle_contests_stats(const int& member_id,const std::string& contest);
 	void handle_new_day(const int& member_id,const int& day_diff);
+//----------------------------------------------------------------------------------------------------------
+	//ACHIVMENTS
+	void give_an_achivment(Member_Model::member_info& member_inf, const int& achivment_id);
+
+	void check_correct_by_correct(const int& member_id, Member_Model::member_info& member_inf);
+	void check_wa_by_wa(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_tasks(const int& member_id, Member_Model::member_info& member_inf);
+	void check_day_tasks(const int& memebr_id, Member_Model::member_info& member_inf);
+	void day_by_day_check(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_base_algo(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_graphs(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_math(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_basepp(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_dp(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_struct(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_contest(const int& member_id, Member_Model::member_info& member_inf);
+	void check_total_streams(const int& member_id, Member_Model::member_info& member_inf);
+	void check_holydays(const int& member_id, Member_Model::member_info& member_inf);
+	void check_time(const int& member_id, Member_Model::member_info& memebr_inf);
+
+	void check_achivments_post(const int& member_id,Member_Model::member_info& member_inf);
 public:
 	void start();
 

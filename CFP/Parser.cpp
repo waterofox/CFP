@@ -102,6 +102,438 @@ void Parser::handle_new_day(const int& member_id,const int& day_diff)
 	}
 }
 
+void Parser::give_an_achivment(Member_Model::member_info& member_inf, const int& achivment_id)
+{
+	std::unordered_set<unsigned int>& achivms = member_inf.achivments;
+	if (achivms.find(achivment_id) == achivms.end())
+	{
+		achivms.insert(achivment_id);
+		member_inf.new_achs.insert(achivment_id);
+	}
+}
+
+void Parser::check_correct_by_correct(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int cbc = member_stats.get_value(member_id, "correct_by_correct");
+	if (cbc >= 5)
+	{
+		give_an_achivment(member_inf,3);
+	}
+	if (cbc >= 10)
+	{
+		give_an_achivment(member_inf, 11);
+	}
+	if (cbc >= 21)
+	{
+		give_an_achivment(member_inf, 2);
+	}
+}
+
+void Parser::check_wa_by_wa(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int wa_by_wa = member_stats.get_value(member_id, "war_by_war");
+	if (wa_by_wa >= 5)
+	{
+		give_an_achivment(member_inf, 8);
+	}
+}
+
+void Parser::check_total_tasks(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int total = member_stats.get_value(member_id, "total_tasks");
+	if (total >= 1)
+	{
+		give_an_achivment(member_inf, 9);
+	}
+	if (total >= 5)
+	{
+		give_an_achivment(member_inf, 57);
+	}
+	if (total >= 10)
+	{
+		give_an_achivment(member_inf, 59);
+	}
+	if (total >= 25)
+	{
+		give_an_achivment(member_inf, 61);
+	}
+	if (total >= 50)
+	{
+		give_an_achivment(member_inf, 58);
+	}
+	if (total >= 100)
+	{
+		give_an_achivment(member_inf, 53);
+	}
+	if (total >= 500)
+	{
+		give_an_achivment(member_inf, 54);
+	}
+	if (total >= 300)
+	{
+		give_an_achivment(member_inf, 55);
+	}
+	if (total >= 200)
+	{
+		give_an_achivment(member_inf, 56);
+	}
+	if (total >= 150)
+	{
+		give_an_achivment(member_inf, 62);
+	}
+	if (total >= 400)
+	{
+		give_an_achivment(member_inf, 60);
+	}
+}
+
+void Parser::check_day_tasks(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int day_tasks = member_stats.get_value(member_id, "day_tasks");
+	if (day_tasks >= 3)
+	{
+		give_an_achivment(member_inf, 13);
+	}
+	if (day_tasks >= 5)
+	{
+		give_an_achivment(member_inf, 16);
+	}
+	if (day_tasks >= 7)
+	{
+		give_an_achivment(member_inf, 14);
+	}
+	if (day_tasks >= 9)
+	{
+		give_an_achivment(member_inf, 17);
+	}
+	if (day_tasks >= 11)
+	{
+		give_an_achivment(member_inf, 15);
+	}
+}
+
+void Parser::day_by_day_check(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int day_by_day = member_stats.get_value(member_id, "day_by_day");
+	if (day_by_day >= 3)
+	{
+		give_an_achivment(member_inf, 18);
+	}
+	if (day_by_day >= 6)
+	{
+		give_an_achivment(member_inf, 19);
+
+	}
+	if (day_by_day >= 10)
+	{
+		give_an_achivment(member_inf, 20);
+
+	}
+	if (day_by_day >= 15)
+	{
+		give_an_achivment(member_inf, 21);
+
+	}
+	if (day_by_day >= 21)
+	{
+		give_an_achivment(member_inf, 22);
+
+	}
+	if (day_by_day >= 28)
+	{
+		give_an_achivment(member_inf, 23);
+
+	}
+}
+
+void Parser::check_total_base_algo(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tba = member_stats.get_value(member_id, "total_base_algo");
+	if (tba >= 5)
+	{
+		give_an_achivment(member_inf, 24);
+	}
+	if (tba >= 10)
+	{
+		give_an_achivment(member_inf, 25);
+
+	}
+	if (tba >= 25)
+	{
+		give_an_achivment(member_inf, 26);
+
+	}
+	if (tba >= 50)
+	{
+		give_an_achivment(member_inf, 27);
+
+	}
+}
+
+void Parser::check_total_graphs(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_graphs");
+
+	if (tmp >= 5)
+	{
+		give_an_achivment(member_inf, 28);
+	}
+	if (tmp >= 10)
+	{
+		give_an_achivment(member_inf, 29);
+	}
+	if (tmp >= 25)
+	{
+		give_an_achivment(member_inf, 30);
+	}
+	if (tmp >= 50)
+	{
+		give_an_achivment(member_inf, 31);
+	}
+}
+
+void Parser::check_total_math(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_math");
+	if (tmp >= 5)
+	{
+		give_an_achivment(member_inf, 32);
+	}
+	if (tmp >= 10)
+	{
+		give_an_achivment(member_inf, 33);
+	}
+	if (tmp >= 25)
+	{
+		give_an_achivment(member_inf, 34);
+	}
+	if (tmp >= 50)
+	{
+		give_an_achivment(member_inf, 35);
+	}
+}
+
+void Parser::check_total_basepp(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_base++");
+	if (tmp >= 5)
+	{
+		give_an_achivment(member_inf, 36);
+	}
+	if (tmp >= 10)
+	{
+		give_an_achivment(member_inf, 37);
+	}
+	if (tmp >= 25)
+	{
+		give_an_achivment(member_inf, 38);
+	}
+	if (tmp >= 50)
+	{
+		give_an_achivment(member_inf, 39);
+	}
+}
+
+void Parser::check_total_dp(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_dp");
+	if (tmp >= 5)
+	{
+		give_an_achivment(member_inf, 40);
+	}
+	if (tmp >= 10)
+	{
+		give_an_achivment(member_inf, 41);
+	}
+	if (tmp >= 25)
+	{
+		give_an_achivment(member_inf, 42);
+	}
+	if (tmp >= 50)
+	{
+		give_an_achivment(member_inf, 43);
+	}
+}
+
+void Parser::check_total_struct(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_struct");
+	if (tmp >= 5)
+	{
+		give_an_achivment(member_inf, 44);
+	}
+	if (tmp >= 10)
+	{
+		give_an_achivment(member_inf, 45);
+	}
+	if (tmp >= 25)
+	{
+		give_an_achivment(member_inf, 46);
+	}
+	if (tmp >= 50)
+	{
+		give_an_achivment(member_inf, 47);
+	}
+}
+
+void Parser::check_total_contest(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_contest");
+	if (tmp >= 3)
+	{
+		give_an_achivment(member_inf, 51);
+	}
+	if (tmp >= 7)
+	{
+		give_an_achivment(member_inf, 50);
+	}
+	if (tmp >= 13)
+	{
+		give_an_achivment(member_inf, 49);
+	}
+	if (tmp >= 21)
+	{
+		give_an_achivment(member_inf, 52);
+	}
+	if (tmp >= 31)
+	{
+		give_an_achivment(member_inf, 48);
+	}
+
+}
+
+void Parser::check_total_streams(const int& member_id, Member_Model::member_info& member_inf)
+{
+	int tmp = member_stats.get_value(member_id, "total_stream");
+	if (tmp >= 5)
+	{
+		give_an_achivment(member_inf, 79);
+	}
+	if (tmp >= 10)
+	{
+		give_an_achivment(member_inf, 80);
+	}
+	if (tmp >= 20)
+	{
+		give_an_achivment(member_inf, 81);
+	}
+	if (tmp >= 3)
+	{
+		give_an_achivment(member_inf, 82);
+	}
+	if (tmp >= 15)
+	{
+		give_an_achivment(member_inf, 83);
+	}
+}
+
+void Parser::check_holydays(const int& member_id, Member_Model::member_info& member_inf)
+{
+	Date date(member_stats.get_value(member_id, "last_task_date"));
+	
+	if (date.month == 10 and date.day == 4)
+	{
+		give_an_achivment(member_inf, 64);
+		return;
+	}
+	else if (date.month == 5 and date.day == 9)
+	{
+		give_an_achivment(member_inf, 65);
+		return;
+	}
+	else if (date.month == 6 and date.day == 12)
+	{
+		give_an_achivment(member_inf, 66);
+		return;
+	}
+	else if (date.month == 2 and date.day == 23)
+	{
+		give_an_achivment(member_inf, 67);
+		return;
+	}
+	else if (date.month == 5 and date.day == 1)
+	{
+		give_an_achivment(member_inf, 68);
+		return;
+	}
+	else if (date.month == 2 and date.day == 14)
+	{
+		give_an_achivment(member_inf, 69);
+		return;
+	}
+	else if ((date.month == 12 and date.day == 31) or\
+		(date.month == 1 and date.day == 1))
+	{
+		give_an_achivment(member_inf, 70);
+		return;
+	}
+	else if (date.month == 3 and date.day == 8)
+	{
+		give_an_achivment(member_inf, 71);
+		return;
+	}
+	else if (date.month == 9 and date.day == 1)
+	{
+		give_an_achivment(member_inf, 72);
+		return;
+	}
+	else if ((date.month == 10 and date.day == 31) or \
+		(date.month == 11 and date.day == 1))
+	{
+		give_an_achivment(member_inf, 73);
+		return;
+	}
+}
+
+void Parser::check_time(const int& member_id, Member_Model::member_info& memebr_inf)
+{
+	Date tmp(member_stats.get_value(member_id, "last_task_date"));
+
+	if (tmp.h >= 2 and tmp.h <= 5)
+	{
+		give_an_achivment(memebr_inf, 6);
+	}
+	
+	if ((tmp.h == 5 and tmp.m >= 50) or (tmp.h == 6 and tmp.m <= 10))
+	{
+		give_an_achivment(memebr_inf, 5);
+	}
+	
+}
+
+void Parser::check_achivments_post(const int& member_id,Member_Model::member_info& member_inf)
+{
+	check_correct_by_correct(member_id,member_inf);
+	check_wa_by_wa(member_id, member_inf);
+	day_by_day_check(member_id, member_inf);
+
+	check_day_tasks(member_id,member_inf);
+
+	check_total_tasks(member_id, member_inf);
+	check_total_base_algo(member_id, member_inf);
+	check_total_graphs(member_id, member_inf);
+	check_total_math(member_id, member_inf);
+	check_total_basepp(member_id, member_inf);
+	check_total_dp(member_id, member_inf);
+	check_total_struct(member_id, member_inf);
+	check_total_contest(member_id, member_inf);
+	check_total_streams(member_id, member_inf);
+
+	//STATUSES ACHIVMENT
+	int tmp = member_stats.get_value(member_id, "ml") /
+		+member_stats.get_value(member_id, "ce") /
+		+member_stats.get_value(member_id, "tl") /
+		+member_stats.get_value(member_id, "wa");
+	if (tmp == 4)
+	{
+		give_an_achivment(member_inf, 63);
+	}
+
+	check_holydays(member_id, member_inf);
+	check_time(member_id, member_inf);
+ 
+}
+
 void Parser::start()
 {
 
@@ -178,6 +610,9 @@ void Parser::start()
 		date_unix = wbs.cell(i, 2).value().get<long long>();
 		date = Date(date_unix);
 		last_date_task = Date(member_stats.get_value(member_id, "last_task_date"));
+
+		auto& member_info = member_db.members[member_id];
+
 		
 		//HANDLE STREAMER
 
@@ -233,9 +668,6 @@ void Parser::start()
 
 		if (task_status == "OK")
 		{
-
-			auto& member_info = member_db.members[member_id];
-
 			if (member_info.tasks.find(task_id) == member_info.tasks.end())
 			{
 				//first correcet solution of task
@@ -321,6 +753,8 @@ void Parser::start()
 		member_stats.set_value(member_id, "last_task_date", date_unix);
 
 		//============================================================================================================================================
+		//ACHIVMENTS
+		check_achivments_post(member_id, member_info);
 	}
 
 	cf_status.close();
