@@ -520,9 +520,9 @@ void Parser::check_achivments_post(const int& member_id,Member_Model::member_inf
 	check_total_streams(member_id, member_inf);
 
 	//STATUSES ACHIVMENT
-	int tmp = member_stats.get_value(member_id, "ml") /
-		+member_stats.get_value(member_id, "ce") /
-		+member_stats.get_value(member_id, "tl") /
+	int tmp = member_stats.get_value(member_id, "ml") \
+		+member_stats.get_value(member_id, "ce") \
+		+member_stats.get_value(member_id, "tl") \
 		+member_stats.get_value(member_id, "wa");
 	if (tmp == 4)
 	{
@@ -646,8 +646,18 @@ void Parser::start()
 						members_on_stream.insert(member_id);
 						member_stats.set_value(member_id, "total_stream", member_stats.get_value(member_id, "total_stream") + 1);
 					}
+
+					if (task_status == "OK")
+					{
+						give_an_achivment(member_info, 10);
+					}
+				}
+				else
+				{
+					give_an_achivment(member_info, 7);
 				}
 			}
+
 		}
 
 		if (!is_stream)
@@ -671,6 +681,23 @@ void Parser::start()
 			if (member_info.tasks.find(task_id) == member_info.tasks.end())
 			{
 				//first correcet solution of task
+
+				if (task_id == 261)
+				{
+					give_an_achivment(member_info, 75);
+				}
+				else if (task_id == 150)
+				{
+					give_an_achivment(member_info, 74);
+				}
+				else if (task_id == 174 or task_id ==  175 or task_id == 189)
+				{
+					give_an_achivment(member_info, 76);
+				}
+				else if (task_id == 88)
+				{
+					give_an_achivment(member_info, 74);
+				}
 
 				is_new_task = true;
 
@@ -717,7 +744,13 @@ void Parser::start()
 
 		if (day_diff >= 1)
 		{
+
 			//new day
+
+			if (day_diff >= 30)
+			{
+				give_an_achivment(member_info, 4);
+			}
 
 			handle_new_day(member_id,day_diff);
 
