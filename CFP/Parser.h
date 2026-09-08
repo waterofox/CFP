@@ -63,6 +63,8 @@ class Parser
 	void check_time(const int& member_id, Member_Model::member_info& memebr_inf);
 
 	void check_achivments_post(const int& member_id,Member_Model::member_info& member_inf);
+	
+	void export_achivments();
 public:
 	void start();
 

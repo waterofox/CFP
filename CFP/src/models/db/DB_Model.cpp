@@ -49,3 +49,8 @@ bool DB_Model::is_data_exsits(const std::string& member_name)
 
 	return false;
 }
+
+std::unordered_map<std::string, unsigned int>& DB_Model::get_fulldata()
+{
+	return data;
+}

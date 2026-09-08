@@ -534,6 +534,42 @@ void Parser::check_achivments_post(const int& member_id,Member_Model::member_inf
  
 }
 
+void Parser::export_achivments()
+{
+	OpenXLSX::XLDocument doc;
+	doc.create("export\\achivments_for_masloy.xlsx",true);
+	
+	if (!doc.isOpen())
+	{
+		doc.open("export\\achivments_for_masloy.xlsx");
+	}
+
+	auto wbs = doc.workbook().worksheet("Sheet1");
+
+	auto& achivs = member_achivments_db.get_fulldata();
+	for (auto& el : achivs)
+	{
+		wbs.cell(1, el.second).value() = el.first;
+	}
+	auto& mems = member_db.get_fulldata();
+	for (auto& el : mems)
+	{
+		wbs.cell(el.second, 1).value() = el.first;
+		
+		auto& member_info = member_db.members[el.second];
+		for (auto& ach : member_info.achivments)
+		{
+			wbs.cell(el.second, ach).value() = 1;
+		}
+
+	}
+	
+	doc.save();
+	doc.close();
+
+
+}
+
 void Parser::start()
 {
 
@@ -791,6 +827,8 @@ void Parser::start()
 	}
 
 	cf_status.close();
+
+	export_achivments();
 
 	stop_models();
 }
