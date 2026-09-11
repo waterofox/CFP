@@ -48,6 +48,9 @@
     <Filter Include="MODELS\DB">
       <UniqueIdentifier>{17c1ca5a-b44d-4e36-81c6-2edc6f4e6638}</UniqueIdentifier>
     </Filter>
+    <Filter Include="COMPS">
+      <UniqueIdentifier>{6b0c0575-4caf-4991-9452-0a60155f9fe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h" />

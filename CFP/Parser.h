@@ -7,8 +7,28 @@
 
 #include "src/models/Member_Stats_Model.h";
 
+#include <foxAndDot-SDK/Core.h>s
+#include <foxAndDot-SDK/Tools/Scene.h>
+
 class Parser
 {
+	//GRAPHICS BUILDING
+	class Event_Handler : public Executable
+	{
+		void operator()() override
+		{
+			if (close_flag)
+			{
+				the_core.get_window().close();
+			}
+		}
+	};
+	
+	static inline bool close_flag = false;
+	static inline Core the_core;
+	
+	void init_core();
+	
 	//base for checking contests
 	std::unordered_set<std::string> structs_contests = { "570478","573635","604876" };
 	std::unordered_set<std::string> math_contests = { "568747","592220","596277","603194" };
@@ -64,6 +84,7 @@ class Parser
 
 	void check_achivments_post(const int& member_id,Member_Model::member_info& member_inf);
 	
+
 	void export_achivments();
 public:
 	void start();

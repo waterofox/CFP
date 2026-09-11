@@ -2,6 +2,10 @@
 
 #include "src/system/Date.h"
 
+void Parser::init_core()
+{
+}
+
 bool Parser::start_models()
 {
 
@@ -160,6 +164,10 @@ void Parser::check_total_tasks(const int& member_id, Member_Model::member_info& 
 	if (total >= 50)
 	{
 		give_an_achivment(member_inf, 58);
+	}
+	if (total >= 60)
+	{
+		give_an_achivment(member_inf, 84);
 	}
 	if (total >= 100)
 	{
@@ -537,6 +545,12 @@ void Parser::check_achivments_post(const int& member_id,Member_Model::member_inf
 void Parser::export_achivments()
 {
 	OpenXLSX::XLDocument doc;
+	OpenXLSX::XLDocument doc_1;
+	OpenXLSX::XLDocument doc_2;
+	OpenXLSX::XLDocument doc_3;
+	OpenXLSX::XLDocument doc_4;
+	OpenXLSX::XLDocument doc_5;
+
 	doc.create("export\\achivments_for_masloy.xlsx",true);
 	
 	if (!doc.isOpen())
@@ -544,7 +558,61 @@ void Parser::export_achivments()
 		doc.open("export\\achivments_for_masloy.xlsx");
 	}
 
+	doc_1.create("export\\golden_ticket_for_masloy.xlsx", true);
+
+	if (!doc_1.isOpen())
+	{
+		doc_1.open("export\\golden_ticket_for_masloy.xlsx");
+	}
+
+	doc_2.create("export\\100_for_masloy.xlsx", true);
+
+	if (!doc_2.isOpen())
+	{
+		doc_2.open("export\\100_for_masloy.xlsx");
+	}
+
+	doc_3.create("export\\200_for_masloy.xlsx", true);
+
+	if (!doc_3.isOpen())
+	{
+		doc_3.open("export\\200_for_masloy.xlsx");
+	}
+
+	doc_3.create("export\\200_for_masloy.xlsx", true);
+
+	if (!doc_3.isOpen())
+	{
+		doc_3.open("export\\200_for_masloy.xlsx");
+	}
+
+	doc_4.create("export\\300_for_masloy.xlsx", true);
+
+	if (!doc_4.isOpen())
+	{
+		doc_4.open("export\\300_for_masloy.xlsx");
+	}
+
+	doc_5.create("export\\400_for_masloy.xlsx", true);
+
+	if (!doc_5.isOpen())
+	{
+		doc_5.open("export\\400_for_masloy.xlsx");
+	}
+
+
 	auto wbs = doc.workbook().worksheet("Sheet1");
+	auto wbs_gold = doc_1.workbook().worksheet("Sheet1");
+	auto wbs_100 = doc_2.workbook().worksheet("Sheet1");
+	auto wbs_200 = doc_3.workbook().worksheet("Sheet1");
+	auto wbs_300 = doc_4.workbook().worksheet("Sheet1");
+	auto wbs_400 = doc_5.workbook().worksheet("Sheet1");
+
+	int gold_index = 1;
+	int index_100 = 1;
+	int index_200 = 1;
+	int index_300 = 1;
+	int index_400 = 1;
 
 	auto& achivs = member_achivments_db.get_fulldata();
 	for (auto& el : achivs)
@@ -560,13 +628,47 @@ void Parser::export_achivments()
 		for (auto& ach : member_info.achivments)
 		{
 			wbs.cell(el.second, ach).value() = 1;
+			if (ach == 84)
+			{
+				wbs_gold.cell(gold_index, 1).value() = el.first;
+				++gold_index;
+			}
+			else if (ach == 53)
+			{
+				wbs_100.cell(index_100, 1).value() = el.first;
+				++index_100;
+			}
+			else if (ach == 56)
+			{
+				wbs_200.cell(index_200, 1).value() = el.first;
+				++index_200;
+			}
+			else if (ach == 55)
+			{
+				wbs_300.cell(index_300, 1).value() = el.first;
+				++index_300;
+			}
+			else if (ach == 60)
+			{
+				wbs_400.cell(index_400, 1).value() = el.first;
+				++index_400;
+			}
 		}
 
 	}
 	
 	doc.save();
 	doc.close();
-
+	doc_1.save();
+	doc_1.close();
+	doc_2.save();
+	doc_2.close();
+	doc_3.save();
+	doc_3.close();
+	doc_4.save();
+	doc_4.close();
+	doc_5.save();
+	doc_5.close();
 
 }
 
@@ -827,8 +929,8 @@ void Parser::start()
 	}
 
 	cf_status.close();
-
 	export_achivments();
+
 
 	stop_models();
 }
