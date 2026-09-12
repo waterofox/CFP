@@ -16,7 +16,11 @@ void DB_Model::sync_table()
 	
 	for (int i = 2; i <= wbs.rowCount(); ++i)
 	{
-		data.insert({wbs.cell(i,1).value().get<std::string>(),i});
+		std::string tmp = wbs.cell(i, 1).value().get<std::string>();
+		if (tmp.length() > 0)
+		{
+			data.insert({ tmp,i });
+		}
 	}
 }
 

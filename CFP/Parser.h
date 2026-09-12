@@ -1,5 +1,7 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "src/models/db/Member_Achievements_Model.h"
 #include "src/models/db/Member_Contest_Model.h"
 #include "src/models/db/Member_Tasks_Model.h"
@@ -7,28 +9,130 @@
 
 #include "src/models/Member_Stats_Model.h";
 
-#include <foxAndDot-SDK/Core.h>s
+#include <foxAndDot-SDK/Core.h>
 #include <foxAndDot-SDK/Tools/Scene.h>
+
+#include "src/comps/Achivment_Card.h"
+
+#include <ctime>
+#include <fstream>
+
+
 
 class Parser
 {
 	//GRAPHICS BUILDING
+public:
 	class Event_Handler : public Executable
 	{
+		std::ifstream file;
+		std::string name_buffer;
+		std::string achiv;
+		int achivs_count = 0;
+		int i = 0;
+
+		bool ready_for_save = false;
+		bool started = true;
+		int skip_frames = 1;
+
+		
+		void save(const bool&)
+		{
+			ready_for_save = true;
+			skip_frames = 1;
+		}
+		Slot<bool, Event_Handler> save_slot;
+
 		void operator()() override
 		{
+			std::time_t now = std::time(nullptr);
+			std::tm* local = std::localtime(&now);
+			
+			if (ready_for_save)
+			{
+
+				if (skip_frames > 0)
+				{
+					--skip_frames; return;
+				}
+
+				sf::Texture texture(the_core.get_window().getSize());
+				texture.update(the_core.get_window());
+				texture.copyToImage().saveToFile("export\\pics\\" + card.member_name->getString().toAnsiString()\
+					+ "_" + std::to_string(local->tm_mday) + "." + std::to_string(local->tm_mon + 1) + "." + std::to_string(local->tm_year + 1900) + "_"\
+					+ card.achivment->getString().toAnsiString() + ".png");
+
+				ready_for_save = false;
+				return;
+
+			}
+
 			if (close_flag)
 			{
 				the_core.get_window().close();
 			}
+
+			if (achivs_count - i == 0)
+			{
+				file >> name_buffer;
+
+				if (name_buffer == "***")
+				{
+					Core::the_core->get_window().close();
+					return;
+				}
+
+				file >> achivs_count;
+				file >> achiv;
+				card.member_name->setString(name_buffer);
+				card.achivment->setString(achiv);
+				card.set_resource(std::stoi(achiv));
+				i = 1;
+
+				Core::the_core->emit(&Parser::Event_Handler::save_signal);
+
+			}
+			else
+			{
+				file >> achiv;
+				card.achivment->setString(achiv);
+				card.set_resource(std::stoi(achiv));
+				++i;
+
+				Core::the_core->emit(&Parser::Event_Handler::save_signal);
+
+			}
+
+		}
+
+	public:
+
+		static inline Signal<bool> save_signal;
+
+		Event_Handler()
+		{
+			file.open("export\\temp\\new_achivments.txt");
+			
+			save_slot.reassign(&Event_Handler::save, this);
+			connect(&save_signal, &save_slot);
 		}
 	};
+private:
+	
+	Event_Handler evnt_handler;
+	Scene scene;
+
+	static inline Achivment_Card card;
 	
 	static inline bool close_flag = false;
+
+	
+
+	void init_scene();
+public:
 	static inline Core the_core;
-	
 	void init_core();
-	
+private:
 	//base for checking contests
 	std::unordered_set<std::string> structs_contests = { "570478","573635","604876" };
 	std::unordered_set<std::string> math_contests = { "568747","592220","596277","603194" };
@@ -89,7 +193,7 @@ class Parser
 public:
 	void start();
 
-	Parser() = default;
+	Parser();
 	~Parser() = default;
 };
 

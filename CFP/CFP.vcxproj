@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="src\comps\Achivment_Card.cpp" />
     <ClCompile Include="src\models\db\DB_Model.cpp" />
     <ClCompile Include="src\models\db\Member_Achievements_Model.cpp" />
     <ClCompile Include="src\models\db\Member_Contest_Model.cpp" />
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="src\comps\Achivment_Card.h" />
     <ClInclude Include="src\models\db\DB_Model.h" />
     <ClInclude Include="src\models\db\Member_Achievements_Model.h" />
     <ClInclude Include="src\models\db\Member_Contest_Model.h" />
@@ -148,6 +150,7 @@
     <ClInclude Include="src\models\Member_Stats_Model.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\system\Date.h" />
+    <ClInclude Include="src\system\resources.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tables\mems.xlsx" />
@@ -155,6 +158,9 @@
     <None Include="tables\mems_contests.xlsx" />
     <None Include="tables\mems_stats.xlsx" />
     <None Include="tables\mems_tasks.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\fonts\clacon2.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

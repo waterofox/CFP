@@ -31,6 +31,7 @@
     <ClCompile Include="src\system\Date.cpp">
       <Filter>SRC</Filter>
     </ClCompile>
+    <ClCompile Include="src\comps\Achivment_Card.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SRC">
@@ -50,6 +51,9 @@
     </Filter>
     <Filter Include="COMPS">
       <UniqueIdentifier>{6b0c0575-4caf-4991-9452-0a60155f9fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RESOURCES">
+      <UniqueIdentifier>{fba505b7-ee1f-4ce0-9a71-83d67f4845ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +82,10 @@
     <ClInclude Include="src\system\Date.h">
       <Filter>SYSTEM</Filter>
     </ClInclude>
+    <ClInclude Include="src\comps\Achivment_Card.h" />
+    <ClInclude Include="src\system\resources.h">
+      <Filter>SYSTEM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="tables\mems_achivments.xlsx">
@@ -95,5 +103,10 @@
     <None Include="tables\mems.xlsx">
       <Filter>TABLES</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\fonts\clacon2.ttf">
+      <Filter>RESOURCES</Filter>
+    </Font>
   </ItemGroup>
 </Project>

@@ -1,9 +1,42 @@
 #include "Parser.h"
 
+#include <fstream>
+
 #include "src/system/Date.h"
+
+#include "src/system/resources.h"
+
+void Parser::init_scene()
+{
+	card.set_name("card");
+	scene.add_new_lay();
+	scene.add(&card,0);
+}
 
 void Parser::init_core()
 {
+	init_scene();
+
+	the_core.set_event_handler(&evnt_handler);
+	the_core.change_scene(&scene);
+	the_core.add_view("main", sf::View(sf::Vector2f(0,0), sf::Vector2f(380, 576)));
+	the_core.get_view("main")->setCenter(card.body.getGlobalBounds().getCenter());
+
+	
+
+	auto& achivs = member_achivments_db.get_fulldata();
+
+	std::string path;
+
+	
+
+	for (auto& el : achivs)
+	{
+		path = "resources\\";
+		path += std::to_string(el.second);
+		path += ".jpg";
+		Core::resource_manager.add_texture(path, el.second);
+	}
 }
 
 bool Parser::start_models()
@@ -551,6 +584,8 @@ void Parser::export_achivments()
 	OpenXLSX::XLDocument doc_4;
 	OpenXLSX::XLDocument doc_5;
 
+	std::ofstream temp_file("export\\temp\\new_achivments.txt");
+
 	doc.create("export\\achivments_for_masloy.xlsx",true);
 	
 	if (!doc.isOpen())
@@ -654,7 +689,23 @@ void Parser::export_achivments()
 				++index_400;
 			}
 		}
+		if (temp_file.is_open())
+		{
+			if (member_info.new_achs.size() > 0)
+			{
+				temp_file << el.first << ' ' << member_info.new_achs.size();
+				for (auto& n_ach : member_info.new_achs)
+				{
+					temp_file << ' ' << n_ach;
+				}
+				temp_file << '\n';
+			}
+		}
 
+	}
+	if (temp_file.is_open())
+	{
+		temp_file << "***";
 	}
 	
 	doc.save();
@@ -669,6 +720,10 @@ void Parser::export_achivments()
 	doc_4.close();
 	doc_5.save();
 	doc_5.close();
+	temp_file.close();
+
+	init_core();
+	the_core.run(380, 576, "CFP cards", 10, sf::State::Windowed);
 
 }
 
@@ -933,4 +988,8 @@ void Parser::start()
 
 
 	stop_models();
+}
+
+Parser::Parser()
+{
 }
