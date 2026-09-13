@@ -723,7 +723,7 @@ void Parser::export_achivments()
 	temp_file.close();
 
 	init_core();
-	the_core.run(380, 576, "CFP cards", 10, sf::State::Windowed);
+	the_core.run(380, 576, "CFP cards", 240, sf::State::Windowed);
 
 }
 
