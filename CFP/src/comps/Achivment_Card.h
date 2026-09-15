@@ -27,6 +27,7 @@ public:
 
 	sf::Text* achivment;
 	sf::Text* member_name;
+	sf::Text* condition;
 
 	Achivment_Card();
 	~Achivment_Card();

@@ -62,6 +62,7 @@ void Parser::stop_models()
 	member_db.stop();
 
 	member_stats.stop();
+	member_stats.copy_table();
 }
 
 void Parser::update_db_models(const std::string& member, const std::string& contest, const std::string& task)
@@ -69,7 +70,7 @@ void Parser::update_db_models(const std::string& member, const std::string& cont
 	if (!member_db.is_data_exsits(member))
 	{
 		member_db.add_member(member);
-		member_stats.add_member(member_db.get_data_id(member));
+		member_stats.add_member(member_db.get_data_id(member),member);
 	}
 	if (!member_tasks_db.is_data_exsits(task))
 	{
@@ -724,7 +725,6 @@ void Parser::export_achivments()
 
 	init_core();
 	the_core.run(380, 576, "CFP cards", 240, sf::State::Windowed);
-
 }
 
 void Parser::start()
@@ -806,6 +806,7 @@ void Parser::start()
 
 		auto& member_info = member_db.members[member_id];
 
+		member_stats.set_value(member_id, "total_packs", member_stats.get_value(member_id, "total_packs") + 1);
 		
 		//HANDLE STREAMER
 

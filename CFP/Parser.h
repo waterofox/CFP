@@ -23,7 +23,7 @@ class Parser
 {
 	//GRAPHICS BUILDING
 public:
-	class Event_Handler : public Executable
+ 	class Event_Handler : public Executable
 	{
 		std::ifstream file;
 		std::string name_buffer;
@@ -60,7 +60,7 @@ public:
 				texture.update(the_core.get_window());
 				texture.copyToImage().saveToFile("export\\pics\\" + card.member_name->getString().toAnsiString()\
 					+ "_" + std::to_string(local->tm_mday) + "." + std::to_string(local->tm_mon + 1) + "." + std::to_string(local->tm_year + 1900) + "_"\
-					+ card.achivment->getString().toAnsiString() + ".png");
+					+ std::to_string(card.get_resource()) + ".png");
 
 				ready_for_save = false;
 				return;
@@ -85,7 +85,11 @@ public:
 				file >> achivs_count;
 				file >> achiv;
 				card.member_name->setString(name_buffer);
-				card.achivment->setString(achiv);
+
+				std::string achiv_name = member_achivments_db.get_name(std::stoi(achiv));
+				std::string achiv_condition = member_achivments_db.get_condition(std::stoi(achiv));
+				card.achivment->setString(sf::String::fromUtf8(achiv_name.begin(),achiv_name.end()));
+				card.condition->setString(sf::String::fromUtf8(achiv_condition.begin(),achiv_condition.end()));
 				card.set_resource(std::stoi(achiv));
 				i = 1;
 
@@ -95,7 +99,10 @@ public:
 			else
 			{
 				file >> achiv;
-				card.achivment->setString(achiv);
+				std::string achiv_name = member_achivments_db.get_name(std::stoi(achiv));
+				std::string achiv_condition = member_achivments_db.get_condition(std::stoi(achiv));
+				card.achivment->setString(sf::String::fromUtf8(achiv_name.begin(), achiv_name.end()));
+				card.condition->setString(sf::String::fromUtf8(achiv_condition.begin(), achiv_condition.end()));
 				card.set_resource(std::stoi(achiv));
 				++i;
 
@@ -143,7 +150,9 @@ private:
 
 //---------------------------------------------------------------
 	//MODELS DB
-	Member_Achievements_Model member_achivments_db;
+public:
+	static inline Member_Achievements_Model member_achivments_db;
+private:
 	Member_Contest_Model member_contests_db;
 	Member_Tasks_Model member_tasks_db;
 	Member_Model member_db;

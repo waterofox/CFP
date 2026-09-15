@@ -16,12 +16,14 @@ class Member_Stats_Model : public Model
 
 public:
 
-	void add_member(unsigned int const& member_id);
+	void add_member(unsigned int const& member_id,const std::string& name);
 	
 	bool is_member_exsits(unsigned int const& member_id);
 
 	int unsigned& get_value(unsigned int const& member_id, const std::string& stat_name);
 	void set_value(unsigned int const& member_id, const std::string& stat_name, unsigned int const& value);
+
+	void copy_table();
 
 	Member_Stats_Model();
 	~Member_Stats_Model() = default;

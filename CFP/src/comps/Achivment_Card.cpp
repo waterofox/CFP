@@ -13,13 +13,18 @@ void Achivment_Card::update()
 	achivment->move(sf::Vector2f(-achivment->getGlobalBounds().size.x / 2, 190));
 
 	member_name->setPosition(achivment->getGlobalBounds().getCenter());
-	member_name->move(sf::Vector2f(-member_name->getGlobalBounds().size.x / 2, 10));
+	member_name->move(sf::Vector2f(-member_name->getGlobalBounds().size.x / 2, 20));
+
+	condition->setPosition(member_name->getGlobalBounds().getCenter());
+	condition->move(sf::Vector2f(-condition->getGlobalBounds().size.x / 2, 50));
 }
 
 void Achivment_Card::update_resource(const std::variant<sf::Texture*, sf::Font*>& res)
 {
 	achivment->setFont(Core::resource_manager.get_font(Fonts::base));
 	member_name->setFont(Core::resource_manager.get_font(Fonts::base));
+	condition->setFont(Core::resource_manager.get_font(Fonts::base));
+
 
 	picture->setTexture(*std::get<sf::Texture*>(res));
 }
@@ -45,6 +50,7 @@ void Achivment_Card::draw(sf::RenderTarget& target, sf::RenderStates states) con
 	target.draw(*picture);
 	target.draw(*achivment);
 	target.draw(*member_name);
+	target.draw(*condition);
 
 }
 
@@ -69,17 +75,22 @@ Achivment_Card::Achivment_Card()
 	
 	
 	achivment = new sf::Text(fnt, "", 276);
-	achivment->setScale(sf::Vector2f(0.2, 0.2));
+	achivment->setScale(sf::Vector2f(0.15, 0.15));
 	achivment->setFillColor(sf::Color::White);
 
 	member_name = new sf::Text(fnt, "", 276);
 	member_name->setScale(sf::Vector2f(0.1, 0.1));
 	member_name->setFillColor(sf::Color::White);
+
+	condition = new sf::Text(fnt, "", 276);
+	condition->setScale(sf::Vector2f(0.06, 0.06));
+	condition->setFillColor(sf::Color::White);
 }
 
 Achivment_Card::~Achivment_Card()
 {
 	delete member_name;
 	delete achivment;
+	delete condition;
 	delete picture;
 }

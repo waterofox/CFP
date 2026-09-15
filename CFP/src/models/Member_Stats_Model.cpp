@@ -5,7 +5,7 @@ void Member_Stats_Model::sync_table()
 	auto wbs = table.workbook().worksheet("sta");
 	std::unordered_map<unsigned short, unsigned int> meta_row;
 
-	for (int i = 1; i <= wbs.columnCount(); ++i)
+	for (int i = 1; i <= wbs.columnCount()-1; ++i)
 	{
 		stats.insert({wbs.cell(1,i).value().getString(),i});
 		meta_row[i] = 0;
@@ -39,13 +39,14 @@ void Member_Stats_Model::push_table()
 	}
 }
 
-void Member_Stats_Model::add_member(unsigned int const& member_id)
+void Member_Stats_Model::add_member(unsigned int const& member_id,const std::string& name)
 {
 	if (is_member_exsits(member_id)) { return; }
 	std::unordered_map<unsigned short, unsigned int> meta_row;
 	
 	members_stats.insert({ members_stats.size()+2,meta_row});
 	
+	table.workbook().worksheet("sta").cell(member_id, 22).value() = name;
 }
 
 bool Member_Stats_Model::is_member_exsits(unsigned int const& member_id)
@@ -62,6 +63,16 @@ int unsigned& Member_Stats_Model::get_value(unsigned int const& member_id, const
 void Member_Stats_Model::set_value(unsigned int const& member_id, const std::string& stat_name, unsigned int const& value)
 {
 	members_stats[member_id][stats[stat_name]] = value;
+}
+
+void Member_Stats_Model::copy_table()
+{
+	std::time_t now = std::time(nullptr);
+
+	OpenXLSX::XLDocument doc;
+	doc.open(table_path);
+	doc.saveAs("export\\stats\\mems_stats_" + std::to_string(now) + ".xlsx",true);
+	doc.close();
 }
 
 Member_Stats_Model::Member_Stats_Model()
