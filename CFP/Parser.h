@@ -172,6 +172,7 @@ private:
 	void handle_wa_status(const int& member_id);
 	void handle_ok_status(const int& member_id,const int& constest_id, const int& task_id);
 
+
 	//STATS
 	void handle_contests_stats(const int& member_id,const std::string& contest);
 	void handle_new_day(const int& member_id,const int& day_diff);
