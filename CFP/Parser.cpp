@@ -779,9 +779,11 @@ void Parser::start()
 	OpenXLSX::XLWorksheet wbs = cf_status.workbook().worksheet("Status");
 	int len = wbs.rowCount();
 
-	for (int i = 2; i <= len; ++i)
+	int cnt = 1;
+	for (int i = len; i >= 2; --i)
 	{
-		float inf = float(i) / float(len);
+		++cnt;
+		float inf = float(cnt) / float(len);
 		printf("%f of 1\n", inf);
 
 		is_new_task = false; 
@@ -876,6 +878,7 @@ void Parser::start()
 			{
 				//first correcet solution of task
 
+
 				if (task_id == 261)
 				{
 					give_an_achivment(member_info, 75);
@@ -897,6 +900,11 @@ void Parser::start()
 
 				member_stats.set_value(member_id, "correct_by_correct", member_stats.get_value(member_id, "correct_by_correct") + 1);
 				member_stats.set_value(member_id, "total_tasks", member_stats.get_value(member_id, "total_tasks") + 1);
+
+				if (member_stats.get_value(member_id, "total_tasks") == 1)
+				{
+					member_stats.set_value(member_id, "first_task_date", date_unix);
+				}
 
 				member_info.tasks.insert(task_id);
 

@@ -46,7 +46,7 @@ void Member_Stats_Model::add_member(unsigned int const& member_id,const std::str
 	
 	members_stats.insert({ members_stats.size()+2,meta_row});
 	
-	table.workbook().worksheet("sta").cell(member_id, 22).value() = name;
+	table.workbook().worksheet("sta").cell(member_id, 23).value() = name;
 }
 
 bool Member_Stats_Model::is_member_exsits(unsigned int const& member_id)
