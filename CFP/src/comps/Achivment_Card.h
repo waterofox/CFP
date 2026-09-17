@@ -9,6 +9,8 @@ class Achivment_Card : public Scene_Component, public sf::Drawable
 
 	sf::Sprite* picture;
 
+	sf::RectangleShape sub_card;
+	sf::RectangleShape sub_card_shadow;
 
 	void update() override;
 	void update_resource(const std::variant<sf::Texture*, sf::Font*>& res) override;

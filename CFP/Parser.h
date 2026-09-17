@@ -91,6 +91,7 @@ public:
 				card.achivment->setString(sf::String::fromUtf8(achiv_name.begin(),achiv_name.end()));
 				card.condition->setString(sf::String::fromUtf8(achiv_condition.begin(),achiv_condition.end()));
 				card.set_resource(std::stoi(achiv));
+				card.body.setFillColor(member_achivments_db.get_color(std::stoi(achiv)));
 				i = 1;
 
 				Core::the_core->emit(&Parser::Event_Handler::save_signal);
@@ -104,6 +105,7 @@ public:
 				card.achivment->setString(sf::String::fromUtf8(achiv_name.begin(), achiv_name.end()));
 				card.condition->setString(sf::String::fromUtf8(achiv_condition.begin(), achiv_condition.end()));
 				card.set_resource(std::stoi(achiv));
+				card.body.setFillColor(member_achivments_db.get_color(std::stoi(achiv)));
 				++i;
 
 				Core::the_core->emit(&Parser::Event_Handler::save_signal);

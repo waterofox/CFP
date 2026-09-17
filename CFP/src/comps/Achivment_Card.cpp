@@ -9,14 +9,20 @@
 
 void Achivment_Card::update()
 {
-	achivment->setPosition(picture->getGlobalBounds().getCenter());
-	achivment->move(sf::Vector2f(-achivment->getGlobalBounds().size.x / 2, 190));
+	achivment->setPosition(sf::Vector2f(
+		picture->getGlobalBounds().getCenter().x,
+		picture->getGlobalBounds().position.y + picture->getGlobalBounds().size.y + 20));
+	achivment->move(sf::Vector2f(-achivment->getGlobalBounds().size.x / 2, 0));
 
-	member_name->setPosition(achivment->getGlobalBounds().getCenter());
-	member_name->move(sf::Vector2f(-member_name->getGlobalBounds().size.x / 2, 20));
+	member_name->setPosition(sf::Vector2f(
+		achivment->getGlobalBounds().getCenter().x,
+		achivment->getGlobalBounds().position.y + achivment->getGlobalBounds().size.y + 20));
+	member_name->move(sf::Vector2f(-member_name->getGlobalBounds().size.x / 2, 0));
 
-	condition->setPosition(member_name->getGlobalBounds().getCenter());
-	condition->move(sf::Vector2f(-condition->getGlobalBounds().size.x / 2, 50));
+	condition->setPosition(sf::Vector2f(
+		sub_card.getGlobalBounds().getCenter().x,
+		sub_card.getPosition().y + sub_card.getSize().y + 40));
+	condition->move(sf::Vector2f(-condition->getGlobalBounds().size.x / 2, 0));
 }
 
 void Achivment_Card::update_resource(const std::variant<sf::Texture*, sf::Font*>& res)
@@ -47,10 +53,15 @@ sf::Drawable* Achivment_Card::as_drawable()
 void Achivment_Card::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(body);
+	target.draw(sub_card_shadow);
+	target.draw(sub_card);
+
 	target.draw(*picture);
+
 	target.draw(*achivment);
 	target.draw(*member_name);
 	target.draw(*condition);
+
 
 }
 
@@ -62,28 +73,35 @@ Achivment_Card::Achivment_Card()
 
 	type_of_resource = Resource_Types::Texture;
 
-	body.setSize(sf::Vector2f(380, 576));
+	body.setSize(sf::Vector2f(570, 864));
 	body.setFillColor(sf::Color(102, 102, 255));
-	body.setOutlineColor(sf::Color::White);
-	body.setOutlineThickness(-2);
 	body.setPosition(sf::Vector2f(0, 0));
 
+	sub_card.setSize(sf::Vector2f(399,604.8));
+	sub_card.setFillColor(sf::Color::White);
+	sub_card.setPosition(sf::Vector2f(85.5, 85.5));
+
+	sub_card_shadow.setSize(sub_card.getSize());
+	sub_card_shadow.setFillColor(sf::Color::Black);
+	sub_card_shadow.setPosition(sub_card.getPosition());
+	sub_card_shadow.move(sf::Vector2f(12, 12));
+
 	picture = new sf::Sprite(txr);
-	picture->setPosition(sf::Vector2f(10, 10));
+	picture->setPosition(sub_card.getPosition());
+	picture->move(sf::Vector2f(19.5,19.5));
 	picture->setTextureRect(sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(360, 360)));
 
-	
-	
+
 	achivment = new sf::Text(fnt, "", 276);
-	achivment->setScale(sf::Vector2f(0.15, 0.15));
-	achivment->setFillColor(sf::Color::White);
+	achivment->setScale(sf::Vector2f(0.2, 0.2));
+	achivment->setFillColor(sf::Color::Black);
 
 	member_name = new sf::Text(fnt, "", 276);
-	member_name->setScale(sf::Vector2f(0.1, 0.1));
-	member_name->setFillColor(sf::Color::White);
+	member_name->setScale(sf::Vector2f(0.15, 0.15));
+	member_name->setFillColor(sf::Color::Black);
 
 	condition = new sf::Text(fnt, "", 276);
-	condition->setScale(sf::Vector2f(0.06, 0.06));
+	condition->setScale(sf::Vector2f(0.1, 0.1));
 	condition->setFillColor(sf::Color::White);
 }
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics/Color.hpp>
+
 #include <unordered_set>
 #include <unordered_map>
 
@@ -14,6 +16,7 @@ public:
 
 	std::string get_name(const int& id);
 	std::string get_condition(const int& id);
+	sf::Color get_color(const int& id);
 
 	Member_Achievements_Model();
 	~Member_Achievements_Model() = default;

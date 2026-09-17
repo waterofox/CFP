@@ -19,7 +19,7 @@ void Parser::init_core()
 
 	the_core.set_event_handler(&evnt_handler);
 	the_core.change_scene(&scene);
-	the_core.add_view("main", sf::View(sf::Vector2f(0,0), sf::Vector2f(380, 576)));
+	the_core.add_view("main", sf::View(sf::Vector2f(0,0), sf::Vector2f(570, 864)));
 	the_core.get_view("main")->setCenter(card.body.getGlobalBounds().getCenter());
 
 	
@@ -724,7 +724,7 @@ void Parser::export_achivments()
 	temp_file.close();
 
 	init_core();
-	the_core.run(380, 576, "CFP cards", 240, sf::State::Windowed);
+	the_core.run(570, 864, "CFP cards", 240, sf::State::Windowed);
 }
 
 void Parser::start()
